@@ -68,8 +68,6 @@ def standardUI():
         file_exts = tuple(map(str, e6.get().split(',')))
         output_file = os.path.join('P:\HI\Product Creation\Products',new_year,new_rel,'Working Docs',out_file_name)
 
-        print(output_file)
-
         base_root = os.path.basename(base_dir)
         new_root = os.path.basename(new_dir)
 
@@ -162,13 +160,11 @@ def genericUI():
         dict = walkDir(base_dir, new_dir, dict, pd_threshold, file_exts)
 
         print('Finished walking through base directories')
-        #print(dict)
 
         #Walk new directory for files absent in base
         dict = walkDir(new_dir, base_dir, dict, pd_threshold, file_exts, True)
 
         print('Finished walking through new directories')
-        #print(dict)
 
         df = createOutput(dict, base_root, new_root, output_file)
 
@@ -207,14 +203,16 @@ def walkDir(base_dir, new_dir, dict, pd_thresh, file_exts, reverse=False):
             subpath_name = 'root'
         else:
             subpath_name = subpath
-        print('Working through path: {}'.format(subpath_name))
+        now = datetime.now()
+        print('Path: {}'.format(subpath_name))
         if not(subpath_name in dict):
             dict[subpath_name] = {}
         for filename in files:
             bfile = bpath + os.sep + filename
             nfile = new_dir + subpath + os.sep + filename
             if bfile.endswith(file_exts) and not(filename in dict[subpath_name]):
-                print('Looking at file: {}'.format(filename))
+                now = datetime.now()
+                print('Looking at file: {} --> {}'.format(filename, now.strftime("%I:%M:%S %p")))
                 if reverse:
                     dict[subpath_name][filename] = compareFiles(nfile, bfile, pd_thresh)
                 else:
