@@ -1,1 +1,1 @@
-# directory_compare
+# directory-compare
